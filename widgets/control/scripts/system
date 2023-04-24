@@ -1,0 +1,219 @@
+#!/bin/bash
+
+brightness=$(brightnessctl i | grep -oP '\(\K[^%\)]+')
+volume=$(pamixer --get-volume)
+empty_battery="1"
+
+volume_icon () {
+    if [ $volume -lt "35" ]; then
+        icon="󰖀"
+    elif [ $volume -lt "70" ]; then
+        icon="󰕾"
+    else
+        icon="󰕾"
+    fi
+
+    [ $(pamixer --get-mute) = "true" ] && icon="󰝟"
+
+    echo $icon
+}
+
+brightness_icon () {
+    if [ $brightness -lt "15" ]; then
+        echo "󰃞"
+    elif [ $brightness -lt "30" ]; then
+        echo "󰃞"
+    elif [ $brightness -lt "45" ]; then
+        echo "󰃟"
+    elif [ $brightness -lt "60" ]; then
+        echo "󰃟"
+    elif [ $brightness -lt "75" ]; then
+        echo "󰃟"
+    elif [ $brightness -lt "90" ]; then
+        echo "󰃠"
+    else
+        echo "󰃠"
+    fi
+}
+
+network_icon () {
+    wifi_check=$(cat /sys/class/net/w*/operstate)
+    ethernet_check=$(cat /sys/class/net/e*/operstate)
+    wifi_strength=$(nmcli dev wifi list | awk '/\*/{if (NR!=1) {print $9}}')
+
+    
+	if [ $wifi_check = up ]; then 
+        if [ $wifi_strength -lt "10" ]; then
+            echo ""
+        elif [ $wifi_strength -lt "25" ]; then
+            echo ""
+        elif [ $wifi_strength -lt "45" ]; then
+            echo ""
+        elif [ $wifi_strength -lt "65" ]; then
+            echo ""
+        elif [ $wifi_strength -lt "85" ]; then
+            echo ""
+        else
+            echo ""
+        fi
+    elif [ $ethernet_check = up ]; then 
+        echo ""
+    else 
+        echo ""
+    fi
+}
+
+network_speed () {
+    interface="$(ip link | awk '/state UP/ {print $2}' | tr -d :)"
+
+    received_1=$(cat /sys/class/net/$interface/statistics/rx_bytes)
+    transmitted_1=$(cat /sys/class/net/$interface/statistics/tx_bytes)
+
+    received_2=$(cat /sys/class/net/$interface/statistics/rx_bytes)
+    transmitted_2=$(cat /sys/class/net/$interface/statistics/tx_bytes)
+
+    bandwidth_up=`expr $transmitted_2 - $transmitted_1`
+    bandwidth_down=`expr $received_2 - $received_1`
+
+    upspeed=$(expr $bandwidth_up / 1024)
+    downspeed=$(expr $bandwidth_down / 1024)
+
+    echo "$downspeed kB/s $upspeed kB/s"
+}
+
+network_name () {
+    ssid=$(iwgetid -r)
+
+    [ -z $ssid ] && echo "Not Connected" || echo "Connected to $ssid"
+}
+
+
+battery_empty () {
+    if [ "$empty_battery" -gt 0 ]; then
+	    if [ ! -f "$HOME/.cache/empty_battery_capacity" ]; then 
+            echo $(($RANDOM % 100)) > "$HOME/.cache/empty_battery_capacity"
+        fi
+    fi
+}
+
+battery_icon () {
+    if [[ -d /sys/class/power_supply/ACAD ]]; then
+		echo ""
+	elif [[ -d /sys/class/power_supply/BAT ]]; then
+		if [[ $(cat /sys/class/power_supply/BAT/status) == "Discharging" ]]; then
+			echo ""
+		else
+			echo ""
+		fi
+	else
+		echo ""
+	fi
+}
+
+battery_capacity () {
+    if [ "$empty_battery" -gt 0 ]; then
+		if [ -f "$HOME/.cache/empty_battery_capacity" ]; then
+			echo $(cat "$HOME/.cache/empty_battery_capacity")
+		fi
+	elif [ -f /sys/class/power_supply/BAT0/capacity ]; then
+		echo $(cat /sys/class/power_supply/BAT0/capacity)
+	fi
+}
+
+cpu_value () {
+    preview_total=0
+    preview_idle=0
+    cache="/tmp/cpu_value.cache.eww"
+
+
+    if [[ -f "${cache}" ]]; then
+		file=$(cat "${cache}")
+		preview_total=$(echo "${file}" | head -n 1)
+		preview_idle=$(echo "${file}" | tail -n 1)
+	fi
+
+	cpu=(`cat /proc/stat | grep '^cpu '`)
+	unset cpu[0]
+	idle=${cpu[4]}
+
+	total=0
+
+	for value in "${cpu[@]:0:4}"; do
+		let "total=$total+$value"
+	done
+
+	if [[ "${preview_total}" != "" ]] && [[ "${preview_idle}" != "" ]]; then
+		let "diff_idle=$idle-$preview_idle"
+		let "diff_total=$total-$preview_total"
+		let "diff_usage=(1000*($diff_total-$diff_idle)/$diff_total+5)/10"
+		echo "${diff_usage}"
+	else
+		echo "0"
+	fi
+
+	echo "${total}" > "${cache}"
+	echo "${idle}" >> "${cache}"
+}
+
+temperature_value () {
+    IFS=')' read -ra core_temp_arr <<< $(sensors | grep '^Core\s[[:digit:]]\+:')
+
+    total_cpu_temp=0
+    index=0
+    
+    for i in "${core_temp_arr[@]}"; do :
+        temp=$(echo $i | sed -n 's/°C.*//; s/.*[+-]//; p; q')
+        let index++
+        total_cpu_temp=$(echo "$total_cpu_temp + $temp" | bc)
+    done
+    
+    avg_cpu_temp=$(echo "scale=2; $total_cpu_temp / $index" | bc)
+
+    temp_status="$avg_cpu_temp"
+    echo $temp_status
+}
+
+case $1 in
+    volume-icon)
+        volume_icon
+    ;;
+    brightness-icon)
+        brightness_icon
+    ;;
+    volume-value)
+        echo $volume
+    ;;
+    brightness-value)
+        echo $brightness
+    ;;
+    network-icon)
+        network_icon
+    ;;
+    network-speed)
+        network_speed
+    ;;
+    network-name)
+        network_name
+    ;;
+    empty-battery)
+        battery_empty
+    ;;
+    battery-icon)
+        battery_icon
+    ;;
+    battery-capacity)
+        battery_capacity
+    ;;
+    cpu-value)
+        cpu_value
+    ;;
+    memory-value)
+        printf "%.0f\n" $(free -m | grep Mem | awk '{print ($3/$2)*100}')
+    ;;
+    temperature-value)
+        temperature_value
+    ;;
+    disk-value)
+        df -h / | awk '{print $5}' | tail -n1 | sed 's/%//g'
+    ;;
+esac

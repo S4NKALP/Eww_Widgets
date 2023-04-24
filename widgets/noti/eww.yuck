@@ -1,0 +1,159 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;; NOTIFICAITONS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; custom rewrite of github.com/syndrizzle/hotfiles
+(defpoll notifications_stats :interval "5s" "scripts/logger.py stats")
+(deflisten notications_scroll_pane "scripts/logger.py subscribe")
+
+(defwidget notifications_layout []
+  (box :orientation "v" :space-evenly "false" :class "notifications-container"
+    (box :class "notifications-header-container" :space-evenly "true" :orientation "v"
+      (label :text "~ NOTIFICATIONS ~" :class "notifications-header" :hexpand true :halign "center"))
+    (scroll :hscroll false :vscroll true :vexpand "true" :hexpand "true" :class "notifications-scroll"
+      (literal :content notications_scroll_pane))
+      (box :class "notifications-footer" :space-evenly "true" :orientation "h"
+        (button :onclick "scripts/clearall.sh" :class "notifications-clear-container" "CLEAR ALL")
+        (button :onclick "eww -c ~/.config/polybar/widgets/noti close notifications" :class "notifications-close-container" "CLOSE"))))
+
+(defwidget cardimage [summary body ?limit_summary ?limit_body appname icon icon_width icon_height close ?close_action image image_width image_height timestamp urgency]
+  (eventbox :class "notifications-cards"
+    (box :orientation "v" :space-evenly false :class "notifications-cards-outer"
+      (box :class "notifications-cards-header" :space-evenly false :hexpand true :valign "center" :vexpand false
+        (label :text appname :hexpand true :halign "center" :class "notifications-card-appname")
+        (button :class "btn-card-close" :onclick close_action :timeout "1s" ""))
+      (box :space-evenly false :halign "fill"
+        (box :hexpand true :vexpand true :valign "fill" :orientation "v" :spacing 0 :class "notifications-card-body" :space-evenly false
+          (label :text summary :limit-width "${limit_summary != "" ? limit_summary : 30}" :halign "fill" :class "summary-header" :show-truncated "true" :wrap "true")
+      (box :space-evenly true :halign "fill" :class "notifications-card-body-content" :valign "center"
+          (label :text body :limit-width "${limit_body != "" ? limit_body : 50}" :wrap true :halign "center" :class "notifications-body-text")
+        (box :class "notifications-card-image-container" :halign "end"
+         (box :style "background-image: url('${image}')" :hexpand true :vexpand true :width image_width :height image_height :class "notifications-card-image")))
+          (label :text "@${timestamp}" :halign "center" :class "notifications-card-timestamp"))))))
+
+(defwindow notifications :stacking "fg" 
+  :stacking "fg"
+  :wm-ignore true
+  :geometry (geometry :x "-11px" :y "48px" :width "18%" :height "70%" :anchor "right top")
+  (notifications_layout))
+
+
+(defpoll quote :interval "24h" "scripts/quotes --quote-and-quotee")
+
+(defwidget quote []
+	(box :class "quote-container" :orientation "v" :hexpand "false" :vexpand "true" :space-evenly "false"
+        (button :style "background-image :url('quote.svg');" :class "quote-img" :halign "center") 
+	    (label :class "quote" :halign "center" :wrap "true" :limit-width 300 :text quote)))
+
+(defwindow showquote
+    :stacking "fg"
+	:geometry (geometry :x "8%"
+                        :y "48px"
+                        :width 300)
+(quote))
+
+(defpoll volume :interval "1s" "amixer -D pulse sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }' | tr -d '%' | head -1")
+
+(defwidget showvol []
+  (box :class "metric" 
+       :orientation "h" 
+       :space-evenly "false"
+       :tooltip volume
+       :style (font-size 25)
+       :height 30
+    (button :onclick "amixer -D pulse set Master 1+ toggle" "")
+    (scale :min 0
+           :max 100
+           :value volume
+           :onchange "amixer -D pulse sset Master {}%"
+	   :width 60
+    )
+  )
+)
+
+
+(defpoll wifi-signal :interval "10s" "nmcli -f IN-USE,SIGNAL,SSID device wifi | awk '/^\*/{if (NR!=1) {print $2}}'")
+
+(defwidget showwifi []
+  (box :class "metric"
+       :orientation "h"
+       :space-evenly "false"
+       :active "false"
+       :style (font-size 25)
+       :height 30
+      (box "")
+      (scale :min 0
+             :max 100
+             :active "false"
+             :value {wifi-signal != "" ? wifi-signal : "0.0"}
+	     :width 68
+      )
+  )
+)           
+
+(defpoll ram :interval "3s" "printf $(free -m | grep Mem | awk '{print ($3/$2)*100}')")
+
+(defwidget showmemory []
+  (box :class "metric"
+       :orientation "h"
+       :space-evenly "false"
+       :active "false"
+       :style (font-size 30)
+       :height 30
+      (box "")
+      (scale :min 0
+             :max 100
+             :value ram
+	     :width 68
+      )
+  )
+)           
+
+(defpoll cpu :interval "3s" "top -b -n 1 | grep 'Cpu(s)' | awk '{print $2}'")
+
+(defwidget showcpu []
+  (box :class "metric"
+       :orientation "h"
+       :space-evenly "false"
+       :active "false"
+       :style (font-size 30)
+       :height 30
+      (box "")
+      (scale :min 0
+             :max 100
+             :value cpu
+	     :width 65
+      )
+  )
+)           
+
+(defwidget sysdata []
+  (box :class "metric"
+       :orientation "v"
+       :space-evenly "false"
+       (showvol)
+       (showwifi)
+       (showcpu)
+       (showmemory)
+  )
+)           
+
+(defwindow showsysdata
+    :stacking "fg"
+	:geometry (geometry :x "87.5%"
+                        :y "4%"
+                        :height 120)
+(sysdata))
+
+(defwidget poweroptions []
+  (box :class "powermenu-container" :orientation "v" :spacing 30
+    (button :class "lock" :onclick "lockscreen" "")
+    (button :class "logout" :onclick "pkill bsp" "")
+    (button :class "suspend" :onclick "systemctl suspend" "")
+    (button :class "restart" :onclick "reboot" "")
+    (button :class "shutdown" :onclick "shutdown -h now" "")
+  )
+)
+
+(defwindow powermenu
+    :stacking "fg"
+	:geometry (geometry :x "1812px"
+						:y "48px" )
+    (poweroptions))

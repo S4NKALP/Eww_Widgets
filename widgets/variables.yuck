@@ -1,0 +1,46 @@
+(defpoll network_status :interval "1s" "~/.config/polybar/widgets/scripts/network.sh status")
+(defpoll network_icon :interval "1s" "~/.config/polybar/widgets/scripts/network.sh icon")
+(defpoll network_radio :interval "1s" "~/.config/polybar/widgets/scripts/network.sh radio-status")
+(defpoll network_ssid :interval "1s" "~/.config/polybar/widgets/scripts/network.sh ssid")
+
+(defpoll volume_icon :interval "1s" "~/.config/polybar/widgets/scripts/volume.sh icon")
+(defpoll volume :interval "1s" "~/.config/polybar/widgets/scripts/volume.sh percentage")
+(defpoll volume_value :interval "1s" "~/.config/polybar/widgets/scripts/volume.sh vol")
+(defpoll is_muted :interval "1s" "~/.config/polybar/widgets/scripts/volume.sh muted")
+
+(defpoll mic :interval "1s" "~/.config/polybar/widgets/scripts/mic get")
+(defpoll mic_status :interval "1s" "~/.config/polybar/widgets/scripts/mic status")
+
+(defpoll bluetooth_state :interval "1s" "~/.config/polybar/widgets/scripts/bluetooth state")
+(defpoll redshift_state :interval "1s" "~/.config/polybar/widgets/scripts/redshift state")
+
+(defpoll pfp :interval "1s" "~/.config/polybar/widgets/scripts/pfp.sh")
+(defpoll rawuser :interval "30s" "whoami")
+(defpoll username :interval "30s" "~/.config/polybar/widgets/scripts/user.sh")
+(defpoll hostname :interval "30s" "cat /etc/hostname")
+(defpoll uptime :interval "5s" "uptime -p")
+
+(defpoll br_icon :interval "1s" "~/.config/polybar/widgets/scripts/brightness.sh icon")
+(defpoll br :interval "1s" "~/.config/polybar/widgets/scripts/brightness.sh br")
+
+
+(defpoll completeday :interval "1h" "date '+%A, %d %B'")
+(defpoll lithour :interval "30m" "date +%I")
+(defpoll litmin :interval "30s" "date +%M")
+(defpoll calendar_day :interval "10h" "date '+%d'")
+(defpoll calendar_month :interval "10h" "date '+%m")
+(defpoll calendar_year :interval "10h" "date '+%Y'")
+(defpoll date :interval "30s" "date '+%d %b, %I:%M %p'")
+(defpoll shortday :interval "1h" "date '+%d %b %y'")
+(defpoll weekday :interval "24h" "date +%A")
+
+(defpoll cpu :interval "3s" "~/.config/polybar/widgets/scripts/cpu.sh")
+(defpoll ram :interval "3s" "~/.config/polybar/widgets/scripts/ram.sh ram")
+(defpoll temp :interval "3s" "~/.config/polybar/widgets/scripts/temp.sh get")
+(defpoll disk :interval "3s" "~/.config/polybar/widgets/scripts/disk.sh")
+
+(defpoll title		:interval "0s"  "~/.config/eww/sidebar/scripts/music title")
+(defpoll artist		:interval "0s"  "~/.config/eww/sidebar/scripts/music artist")
+(defpoll album		:interval "0s"  "~/.config/eww/sidebar/scripts/music album")
+(defpoll playpause	:interval "0s"  "~/.config/eww/sidebar/scripts/music statusicon")
+(defpoll art		:interval "0s"  "~/.config/eww/sidebar/scripts/music coverloc")

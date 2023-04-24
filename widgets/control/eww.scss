@@ -1,0 +1,25 @@
+@import "src/scss/colors";
+@import "src/scss/style";
+
+@import "src/scss/widgets/control-panel";
+@import "src/scss/widgets/info-panel";
+@import "src/scss/widgets/top-panel";
+
+@import "src/scss/widgets/control-panel/controls";
+@import "src/scss/widgets/control-panel/music";
+@import "src/scss/widgets/control-panel/profile";
+@import "src/scss/widgets/control-panel/sliders";
+
+@import "src/scss/widgets/info-panel/calendar";
+@import "src/scss/widgets/info-panel/date";
+@import "src/scss/widgets/info-panel/notification-stats";
+@import "src/scss/widgets/info-panel/weather";
+
+@import "src/scss/widgets/notification-panel/notification-box";
+@import "src/scss/widgets/notification-panel/notification-card";
+
+@import "src/scss/widgets/top-panel/actions";
+@import "src/scss/widgets/top-panel/date";
+@import "src/scss/widgets/top-panel/music";
+@import "src/scss/widgets/top-panel/sysmenu";
+@import "src/scss/widgets/top-panel/workspaces";

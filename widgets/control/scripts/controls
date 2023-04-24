@@ -1,0 +1,83 @@
+#!/bin/bash
+
+cache="$HOME/.cache/eww"
+
+night_light="$cache/night-light.eww"
+do_not_disturb="$cache/do-not-disturb.eww"
+airplane_mode=$(nmcli radio all | awk 'FNR == 2 {print $2}')
+icon_dir="$HOME/.config/polybar/widgets/control/assets/notifications"
+
+[ ! -d $cache ] && mkdir $cache
+
+night_light_toggle () {
+	if [ ! -f $night_light ]; then
+		touch $night_light
+		redshift -P -O 4500 &
+        notify-send -a "Night Light" -i $icon_dir/nightlight-enable.svg "Night Night" "Blue light filter is on"
+	else
+		rm $night_light
+		redshift -x &
+        notify-send -a "Night Light" -i $icon_dir/nightlight-disable.svg "Night Night" "Blue light filter is off"
+	fi
+}
+
+
+do_not_disturb_toggle () {
+	if [ ! -f "$do_not_disturb" ]; then
+		touch "$do_not_disturb"
+        dunstctl set-paused true
+	else
+		rm "$do_not_disturb"
+		dunstctl set-paused false &
+        notify-send -a "Notifications" -i $icon_dir/dnd-enable.svg "Do Not Disturb" "Notifications are Unpaused" -u Normal
+	fi
+}
+
+
+airplane_mode_toggle () {
+	if [ $airplane_mode = enabled ]; then
+        nmcli radio all off &
+        notify-send -a "Wireless" -i $icon_dir/airplane-disable.svg "Airplane Mode" "Radios are turn off"
+    else       
+        nmcli radio all on &
+        notify-send -a "Wireless" -i $icon_dir/airplane-enable.svg "Airplane Mode" "Radios are back on"
+    fi
+}
+
+
+bluetooth_toggle () {
+    if rfkill list bluetooth | grep -q 'blocked: yes'; then
+        rfkill unblock bluetooth &
+        notify-send -a "Bluetooth" -i $icon_dir/bluetooth-disable.svg "Bluetooth" "Bluetooth is back on"
+    else 
+        rfkill block bluetooth &
+        notify-send -a "Bluetooth" -i $icon_dir/bluetooth-enable.svg "Bluetooth" "Bluetooth is turn off"
+    fi
+}
+
+case $1 in
+    nl-toggle)
+        night_light_toggle
+    ;;
+    dnd-toggle)
+        do_not_disturb_toggle
+    ;;
+    air-toggle)
+        airplane_mode_toggle
+    ;;
+    blue-toggle)
+        bluetooth_toggle
+    ;;
+    nl-check)
+        [[ ! -f "$night_light" ]] && echo "Off" || echo "On"
+    ;;
+    air-check)
+        [[ $airplane_mode = enabled ]] && echo "Off" || echo "On"
+    ;;
+    dnd-check)
+        [[ ! -f "$do_not_disturb" ]] && echo "Off" || echo "On"
+    ;;
+    blue-check)
+        rfkill list bluetooth | grep -q 'blocked: yes' && echo "Off" || echo "On"
+    ;;
+esac

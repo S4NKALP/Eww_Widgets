@@ -1,0 +1,41 @@
+.top-panel-window {
+    .workspaces {
+        background-color: $black-darker;
+        border-radius: 0 20px 20px 0;
+        font-size: 1em;
+        font-weight: bold;
+        padding: 0 1.5em 0 1.5em;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+        
+        button {
+            margin: .8em;
+            padding-left: 1px;
+            transition: 0.5s;
+                
+            &.active-occupied,
+            &.active-empty {
+                color: $pink;
+
+                &:hover {
+                    color: $blue;
+                }
+            }
+
+            &.inactive-occupied {
+                color: $blue;
+
+                &:hover {
+                    color: $pink;
+                }
+            }
+
+            &.inactive-empty {
+                color: $black-lighter;
+
+                &:hover {
+                    color: $blue;
+                }
+            }
+        }
+    }
+}

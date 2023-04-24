@@ -1,0 +1,586 @@
+// Author: github.com/NeshHari
+* {
+  all: unset;
+}
+
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+$text: #cdd6f4;
+$subtext0: #a6adc8;
+$subtext1: #bac2de;
+$surface0: #313244;
+$surface1: #45475a;
+$surface2: #585b70;
+$overlay0: #6c7086;
+$overlay1: #7f849c;
+$overlay2: #9399b2;
+$blue: #89b4fa;
+$lavender: #b4befe;
+$sapphire: #74c7ec;
+$sky: #89dceb;
+$teal: #94e2d5;
+$green: #a6e3a1;
+$yellow: #f9e2af;
+$peach: #fab387;
+$maroon: #eba0ac;
+$red: #f38ba8;
+$mauve: #cba6f7;
+$pink: #f5c2e7;
+$flamingo: #f2cdcd;
+$rosewater: #f5e0dc;
+
+.cal-inner-container,
+.cal-outer-container {
+  font-family: Vanilla Caramel;
+  font-size: 1em;
+  font-weight: bold;
+  color: $text;
+  background-color: $crust;
+  border-radius: 0.3em;
+  padding: 0.4em;
+}
+
+.cal-inner-elems {
+  padding: 0.7em;
+}
+
+.cal-date {
+  font-family: Vanilla Caramel;
+  font-size: 1.5em;
+  color: $base;
+  background-color: $mauve;
+  border-radius: 0.1em;
+  padding: 0.2em;
+  margin: 0.2em;
+}
+
+calendar.button {
+  color: $text;
+}
+
+calendar.header,
+calendar.highlight {
+  color: $mauve;
+}
+
+calendar:selected {
+  color: $base;
+  background-color: $mauve;
+  border-radius: 10em;
+}
+
+calendar:indeterminate {
+  color: $surface2;
+}
+
+.btn-launcher,
+.btn-notifications,
+.btn-quote,
+.btn-mail,
+.btn-layout,
+.btn-wmclass,
+.btn-bluetooth,
+.btn-volume,
+.btn-update,
+.btn-update-num,
+.btn-time,
+.btn-search,
+.btn-sysdata,
+.btn-spotify,
+.btn-power {
+  font-family: "Font Awesome 6 Free Solid";
+}
+
+.btn-spotify {
+  font-family: FiraCode Nerd Font;
+  font-weight: bold;
+  font-size: 1em;
+  color: $text;
+  background-color: $crust;
+}
+
+.btn-spotify:hover {
+  color: $crust;
+  background-color: $text;
+  transition: ease-in-out 0.3s all;
+}
+
+.spotify-container {
+  background-color: $crust;
+  padding: 1em;
+  border: 0.2em solid $mantle;
+}
+
+.spotify-img {
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 220px;
+  min-width: 220px;
+  border-radius: 0.3em;
+  border: 0.3em solid $text;
+  margin: 0.3em 1em;
+}
+
+.spotify-inner-right-container {
+  margin: 0.3em;
+  color: $crust;
+  background-color: $text;
+  border-radius: 0.3em;
+  padding: 2em;
+}
+
+.spotify-title {
+  font-family: Vanilla Caramel;
+  font-size: 1.6em;
+  font-weight: bold;
+  color: $crust;
+}
+
+.spotify-singer {
+  font-family: CaskaydiaCove Nerd Font;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: $crust;
+}
+
+.spotify-album {
+  font-size: 1em;
+  color: $crust;
+  font-style: italic;
+  margin-bottom: 1em;
+}
+
+.spotify-controls {
+  margin-top: 1.5em;
+  color: $surface2;
+  background-color: $crust;
+  border-radius: 3em;
+}
+
+.spotify-controls button {
+  font-family: CaskaydiaCove Nerd Font;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 0.3em;
+}
+
+.spotify-controls button:hover {
+  color: $text;
+  transition: ease-in-out 0.3s all;
+}
+
+tooltip {
+  font-family: Vanilla Caramel;
+  font-size: 1em;
+  color: $base;
+  background-color: $yellow;
+  border-radius: 0.3em;
+  border: 0.2em solid $peach;
+}
+
+.notifications-container {
+  background-color: $crust;
+  padding: 1.8em;
+}
+
+.notifications-header-container {
+  font-family: Vanilla Caramel;
+  font-size: 1em;
+  margin-bottom: 0.5em;
+  color: $crust;
+}
+
+.notifications-header {
+  font-size: 2.3em;
+  font-weight: bold;
+  background-color: $text;
+  border-radius: 5em;
+  padding: 0 0.5em;
+  margin-bottom: 0.2em;
+}
+
+.notifications-scroll {
+  background-color: $mantle;
+  padding: 1em 1.5em 1em 1.5em;
+  border-radius: 0.3em;
+}
+
+.notifications-footer {
+  font-family: Vanilla Caramel;
+  font-size: 1.3em;
+  color: $crust;
+  padding-top: 1em;
+}
+
+.notifications-close-container {
+  background-color: $red;
+  border: 0.1em solid $red;
+  border-radius: 0.3em;
+  padding: 0.2em 0.6em 0.2em 0.6em;
+  margin: 0 1em;
+}
+
+.notifications-close-container:hover {
+  background-color: $crust;
+  color: $red;
+  transition: ease-in-out 0.3s all;
+}
+
+.notifications-clear-container {
+  background-color: $peach;
+  border: 0.1em solid $peach;
+  border-radius: 0.3em;
+  padding: 0.2em 0.6em 0.2em 0.6em;
+  margin: 0 1em;
+}
+
+.notifications-clear-container:hover {
+  background-color: $crust;
+  color: $peach;
+  transition: ease-in-out 0.3s all;
+}
+
+.notifications-cards {
+  font-family: CaskaydiaCove Nerd Font;
+  border-radius: 0.3em;
+  background-color: $text;
+  color: $crust;
+}
+
+.notifications-cards-header {
+  font-family: CaskaydiaCove Nerd Font;
+  font-weight: bold;
+  background-color: $crust;
+  color: $text;
+  padding: 0.8em;
+  border-radius: 0.3em 0.3em 0 0;
+}
+
+.notifications-card-appname {
+  font-weight: bold;
+  padding-left: 2em;
+}
+
+.btn-card-close {
+  font-family: "Font Awesome 6 Free Solid";
+  font-size: 0.8em;
+  color: $crust;
+  background-color: $red;
+  border-radius: 0.3em;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  border: 0.1em solid $red;
+}
+
+.btn-card-close:hover {
+  color: $red;
+  background-color: $base;
+  transition: ease 0.5s;
+}
+
+.notifications-card-body {
+  border-radius: 0.3em;
+}
+
+.notifications-card-image {
+  background-repeat: no-repeat;
+  background-size: contain;
+  min-height: 100px;
+  min-width: 100px;
+  border-radius: 0.3em;
+  padding: 0.5em;
+  margin-right: 0.8em;
+}
+
+.summary-header {
+  font-family: Vanilla Caramel;
+  font-style: italic;
+  font-size: 1.1em;
+  background-color: $overlay2;
+  color: $base;
+  padding: 0.5em;
+  margin-bottom: 0.2em;
+}
+
+.notifications-card-timestamp {
+  font-family: CaskaydiaCove Nerd Font;
+  font-size: 0.8em;
+  font-weight: bold;
+  background-color: $crust;
+  color: $text;
+  margin-top: 0.5em;
+  padding: 0.5em 1em 0.5em 1em;
+  border-radius: 1em;
+  margin-bottom: 0.5em;
+}
+
+.notifications-body-text {
+  color: $crust;
+  border-radius: 1em;
+  padding: 0.5em;
+}
+
+.notifications-card-body-content {
+  font-family: Fira Code Nerd Font;
+  font-weight: bold;
+  font-size: 0.8em;
+  color: $crust;
+  padding: 0.8em;
+}
+
+/* WHOLE BAR */
+.bar {
+  background-color: $crust;
+  padding: 1em 0em;
+}
+
+/* TOP OF BAR */
+.btn-xmonad {
+  font-family: "CaskaydiaCove Nerd Font";
+  font-size: 1.8em;
+  color: $crust;
+  background-color: $lavender;
+  border-radius: 100%;
+  margin: 0em 0.3em;
+  padding: 0em 0.3em;
+  border: 0.1em dashed $base;
+}
+
+.workspace-container {
+  font-family: "Font Awesome 6 Free Solid";
+}
+
+.workspace-container button {
+  background-color: $base;
+  margin: 0.5em;
+  padding: 0.3em;
+  border-radius: 0.1em;
+}
+
+.workspace-container button:hover {
+  background-color: $green;
+  color: $crust;
+  transition: ease-in-out 0.3s all;
+}
+
+// Empty
+.wsc0 {
+  color: $overlay1;
+}
+
+// Focused
+.wsc1,
+.wsc01,
+.wsc11,
+.wsc21,
+.wsc31,
+.wsc41 {
+  color: $green;
+}
+
+// Ocuppied
+.wsc00,
+.wsc10,
+.wsc20,
+.wsc30,
+.wsc40 {
+  color: $yellow;
+}
+
+.btn-layout {
+  color: $subtext0;
+}
+
+.class-names {
+  font-family: CaskaydiaCove Nerd Font;
+  font-weight: bold;
+  font-size: 1em;
+  color: $overlay1;
+}
+
+/* MIDDLE OF BAR */
+.app-container {
+  background-color: $mantle;
+  padding: 0.1em;
+  margin-bottom: 0.5em;
+  border-radius: 0.3em;
+}
+
+.app-container > * {
+  background-repeat: no-repeat;
+  background-size: 1.2em;
+  min-height: 20px;
+  min-width: 20px;
+  margin: 0.3em;
+}
+
+.app-container > *:hover {
+  background-size: 1.3em;
+  transition: ease-in-out 0.3s all;
+}
+
+.btn-launcher {
+  color: $teal;
+}
+
+.btn-wmclass {
+  font-family: CaskaydiaCove Nerd Font;
+  font-weight: bold;
+  font-size: 1em;
+  color: $overlay1;
+}
+
+.btn-search {
+  color: $pink;
+}
+
+.btn-search:hover {
+  font-size: 1.1em;
+  transition: ease-in-out 0.3s all;
+}
+
+.btn-quote {
+  color: $green;
+}
+
+.btn-quote:hover {
+  font-size: 1.1em;
+  transition: ease-in-out 0.3s all;
+}
+
+.quote-container {
+  background-color: $crust;
+  padding: 1em;
+  border-radius: 0.3em;
+  border: 0.2em solid $mantle;
+}
+
+.quote-img {
+  background-repeat: no-repeat;
+  background-size: 30px;
+  min-height: 30px;
+  min-width: 30px;
+  border-radius: 2em;
+  margin-bottom: 1em;
+}
+
+.quote {
+  font-family: Vanilla Caramel;
+  color: $text;
+}
+
+.btn-notifications {
+  color: $yellow;
+}
+
+.btn-notifications:hover {
+  font-size: 1.1em;
+  transition: ease-in-out 0.3s all;
+}
+
+/* BOTTOM OF BAR */
+.btn-time {
+  font-family: CaskaydiaCove Nerd Font;
+  font-weight: bold;
+  font-size: 1em;
+  background-color: $mantle;
+  border-radius: 0.3em;
+  margin: 0em 0.5em;
+  color: $mauve;
+}
+
+.btn-time > * {
+  margin: 0.1em 0.5em;
+}
+
+.btn-mail {
+  color: $yellow;
+}
+
+.label-mail {
+  font-family: "CaskaydiaCove Nerd Font";
+  color: $yellow;
+}
+
+.btn-update {
+  color: $sapphire;
+}
+
+.label-update {
+  color: $sapphire;
+  font-family: "CaskaydiaCove Nerd Font";
+}
+
+.btn-volume {
+  color: $lavender;
+  font-size: 0.9em;
+}
+
+.volume scale trough {
+  all: unset;
+  background-color: $mantle;
+  min-height: 4em;
+  min-width: 0.5em;
+  margin: 0.5em 0em;
+  border-radius: 0.3em;
+}
+
+.volbar trough highlight {
+  background-color: $lavender;
+  border-radius: 0.3em;
+}
+
+.btn-sysdata {
+  color: $peach;
+}
+
+.metric {
+  font-family: "Font Awesome 6 Free Solid";
+  font-size: 0.9em;
+  background-color: $crust;
+  color: $peach;
+  padding: 0.3em;
+}
+
+.metric scale trough {
+  all: unset;
+  background-color: $surface2;
+  min-height: 0.3em;
+  min-width: 2em;
+  border-radius: 0.3em;
+}
+
+.metric scale trough highlight {
+  background-color: $peach;
+}
+
+.btn-bluetooth {
+  color: $maroon;
+}
+
+.label-bluetooth {
+  font-family: "CaskaydiaCove Nerd Font";
+  font-weight: bold;
+  color: $maroon;
+}
+
+.btn-power {
+  color: $red;
+}
+
+.powermenu-container {
+  font-family: "Font Awesome 6 Free Solid";
+  font-size: 2em;
+  color: $red;
+  background-color: $crust;
+  padding: 1em;
+  border: 0.2em solid $mantle;
+}
+
+.powermenu-container > *:hover {
+  color: $crust;
+  background-color: $red;
+  border-radius: 10%;
+}
+

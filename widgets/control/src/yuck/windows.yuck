@@ -1,0 +1,58 @@
+(defwindow control-panel
+	:geometry 
+
+        (geometry 
+            :x "41.2%"
+			:y "6.5%" 
+			:width "0%" 
+			:height "0%"
+			:anchor "top right"
+        )
+
+	:windowtype "dock"
+	:wm-ignore true
+
+	(control-panel)
+)
+
+(defwindow info-panel
+	:geometry 
+
+        (geometry 
+            :x "50%"
+			:y "6.5%" 
+			:width "0%" 
+			:height "0%"
+			:anchor "top right"
+        )
+
+	:windowtype "dock"
+	:wm-ignore true
+
+	(info-panel)
+)
+(defwindow top-panel
+	:geometry 
+	
+		(geometry 
+			:x "1%"
+			:y "1%" 
+			:height "6%" 
+			:width "98%"
+		)
+
+  	:reserve
+
+    	(struts 
+      		:side "top" 
+      		:distance "7%"
+    	)
+
+	
+	:stacking "bg"
+	:windowtype "dock"
+	:wm-ignore false
+
+	(top-panel)
+)
+

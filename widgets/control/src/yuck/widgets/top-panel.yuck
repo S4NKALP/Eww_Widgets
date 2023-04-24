@@ -1,0 +1,207 @@
+(defwidget left []
+    (eventbox
+        :cursor "pointer"
+
+        (literal
+            :content workspaces
+        )
+    )
+)
+
+(defwidget center []
+    (box 
+		:orientation "h" 
+		:space-evenly false
+		:valign "center"
+		:halign "center"
+
+        (eventbox
+            :onhover "${EWW_CMD} update top-panel-music=true"
+            :onhoverlost "${EWW_CMD} update top-panel-music=false"
+            :cursor "pointer"
+
+            (box 
+                :class "music-bar" 
+                :orientation "h" 
+                :space-evenly false
+
+                (box 
+                    :class "song-cover-bar" 
+                    :style "background-image: url('${music-cover}');"
+                )
+
+                (button 
+                    :class "song-bar" 
+                    {music-scroll}
+                    ;; Replace 'music-scroll' with 'title-artist' if your facing performance drop (Replacing with title-artist will not wrap the text)
+                )
+
+                (revealer
+                    :transition "slideright"
+                    :reveal top-panel-music
+                    :duration "350ms"
+
+                    (box 
+                        :valign "center"
+                        :orientation "h" 
+
+                        (button
+                            :class "music-previous-bar"
+                            :onclick "playerctl -p ${players} previous" ""
+                        )
+                
+                        (button
+                            :class "music-play-bar"
+                            :onclick "playerctl -p ${players} play-pause" play-pause
+                        )
+
+                        (button
+                            :class "music-next-bar"
+                            :onclick "playerctl -p ${players} next" ""
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+(defwidget right []
+    (box
+        :orientation "h"
+        :space-evenly false
+        :halign "end"
+
+        (eventbox
+            :onclick "$HOME/.config/sweetconfigs-xorg/bin/widgets/control-panel &"
+            :onhover "${EWW_CMD} update control-panel-hover=true"
+            :onhoverlost "${EWW_CMD} update control-panel-hover=false"
+            :cursor "pointer"
+
+            (box
+	    	    :class "actions"
+                :style {control-panel-hover ? "background-color: #22262a; padding: .6em;" : "background-color: #1b1f23"}
+	    	    :orientation "h"
+	    	    :space-evenly false
+                :valign "center"
+
+                (box
+                    :orientation "h"  
+                    :space-evenly false
+                    :spacing 2
+
+                    (eventbox
+                        :onscroll "$HOME/.config/sweetconfigs-xorg/bin/utilities/brightness {}"
+            
+                        (label 
+                            :class "brightness-icon" 
+                            :tooltip "Brightness: ${brightness-value}%"	
+                            :text {brightness-icon}
+                        )
+                    )
+                )
+                
+                (box
+                    :orientation "h" 	  
+                    :space-evenly "false" 
+                    :spacing 2
+
+                    (eventbox
+                        :onscroll "$HOME/.config/sweetconfigs-xorg/bin/utilities/volume {}"
+                    
+                        (button
+                            :onclick "pamixer -t"   
+                            :class "volume-icon" 
+		    	    		:tooltip "Volume: ${volume-value}%"
+                            {volume-icon}
+                        )
+                    )
+                )
+                
+                (box
+                    :orientation "h" 	  
+                    :space-evenly false
+                    :spacing 2
+                    
+                    (button
+                        :onclick "$HOME/.config/sweetconfigs-xorg/bin/menu/network &"
+                        :tooltip "${network-name}"
+                        :class "network-icon" 
+                        {network-icon}
+                    )
+                )
+            )
+        )
+
+        (box 
+	    	:orientation "h"
+	    	:class "time"
+	    	:space-evenly "false"
+	    	:halign "end"
+            :valign "center"
+
+	    	(label
+	    		:class "time-icon"
+	    		:text ""
+	    	)
+
+            (eventbox
+                :cursor "pointer"
+
+	    	    (button
+	    		    :class "time-text"
+	    		    :tooltip "${date}"
+	    		    :onclick "$HOME/.config/sweetconfigs-xorg/bin/widgets/info-panel &"
+  	    		    {time}
+	    	    )
+            )
+	    )
+
+        (box 
+	    	:orientation "h"
+	    	:space-evenly "false"
+	    	:halign "end"
+            :valign "center"
+
+            (eventbox
+                :cursor "pointer"
+
+                (button
+	    	        :class "tray"
+                    :onclick "$HOME/.config/sweetconfigs-xorg/bin/bar/tray eww &"
+                    {tray == "On" ? "" : ""}
+                )
+            )
+        )
+
+        (box 
+            :class "sysmenu"
+            :orientation "h"
+            :space-evenly "false"
+            :halign "end"
+            :valign "center"
+
+            (eventbox
+                :cursor "pointer"
+    
+                (button 
+                    :class "sysmenu-btn"
+                    :onclick "$HOME/.config/sweetconfigs-xorg/bin/menu/power &"
+                    ""
+                )
+            )
+        )
+    )
+)
+
+
+(defwidget top-panel []
+    (box
+        :orientation "h"
+        :class "top-panel-window"
+
+        (left)
+        (center)
+        (right)
+    )
+)

@@ -1,0 +1,64 @@
+.top-panel-window {
+    .actions {
+        font-size: 1.3em;
+        border-radius: 10px;
+        background-color: $black-darker;
+        padding: .5em;
+        margin-right: 1em;
+        transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 1);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+    }
+
+    .brightness-icon,
+    .volume-icon,
+    .network-icon {
+        margin: 0 .5em;
+        transition: 0.5s;
+        
+        &:hover {
+            color: $blue;
+        }
+    }
+
+    .brightness-icon {
+        color: $yellow;
+    }
+    .volume-icon {
+        color: $green;
+    }
+    .network-icon {
+        color: $purple;
+    }
+
+    scale trough {
+        all: unset;
+        background-color: $black-lighter;
+        border-radius: 5px;
+        min-height: 10px;
+        min-width: 80px;
+    }
+
+    .brightness-bar trough highlight {
+        background-color: $yellow;
+        border-radius: 5px;
+    }
+    .volume-bar trough highlight {
+        background-color: $green;
+        border-radius: 5px;
+    }
+    .network-speed {
+        font-size: 0.8em;
+        color: $purple;
+    }
+
+    .tray {
+        font-size: 1.5em;
+        margin: 0 .5em 0 0;
+        color: $green;
+        transition: 0.5s;
+
+        &:hover {
+            color: $blue;
+        }
+    }
+}

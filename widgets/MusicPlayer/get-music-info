@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Get the metadata of the currently playing track
+metadata=$(playerctl metadata)
+
+# Extract the required information from the metadata
+artist=$(echo "$metadata" | grep "xesam:artist" | sed 's/xesam:artist: //')
+title=$(echo "$metadata" | grep "xesam:title" | sed 's/xesam:title: //')
+album=$(echo "$metadata" | grep "xesam:album" | sed 's/xesam:album: //')
+art=$(echo "$metadata" | grep "xesam:artUrl" | sed 's/xesam:artUrl: //')
+status=$(playerctl status)
+
+# Determine the playback status
+if [ "$status" = "Playing" ]; then
+    playback_status=""
+elif [ "$status" = "Paused" ]; then
+    playback_status=""
+else
+    playback_status=""
+fi
+
+# Calculate the progress of the current track
+position=$(playerctl position)
+duration=$(echo "$metadata" | grep "mpris:length" | sed 's/mpris:length: //')
+progress_bar=$(echo "$position / $duration * 100" | bc -l | awk -F. '{print $1}')
+
+# Calculate the time elapsed and remaining time
+time_elapsed=$(printf "%.0f:%.2d" $(echo "$position/60" | bc -l) $(echo "$position%60" | bc -l))
+time_remaining=$(printf "%.0f:%.2d" $(echo "($duration - $position)/60" | bc -l) $(echo "($duration - $position)%60" | bc -l))
+
+# Output the music information in JSON format
+cat <<-EOF
+{
+  "artist": "$artist",
+  "title": "$title",
+  "album": "$album",
+  "album_art": "$art",
+  "playback_status": "$playback_status",
+  "progress_bar": "$progress_bar",
+  "time_elapsed": "$time_elapsed",
+  "time_remaining": "$time_remaining"
+}
+EOF

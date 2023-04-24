@@ -1,0 +1,29 @@
+#!/bin/bash
+
+[ ! -d $cache_dir ] && mkdir $cache_dir
+
+cache_dir="$HOME/.cache/eww"
+cache="$cache_dir/control-center.eww"
+config="$HOME/.config/polybar/widgets/control"
+active_players=$(playerctl -l | head -n 1)
+
+run () {
+	eww -c $config open control-panel
+	eww -c $config update control-panel=true
+        [[ ! -z $active_players ]] && eww -c $config update music-panel=true
+}
+
+if [[ ! `pidof eww` ]]; then
+	eww -c $config daemon
+
+else
+	if [ ! -f $cache ]; then
+		touch $cache
+		run
+	else
+		[[ ! -z $active_players ]] && eww -c $config update music-panel=false 
+		eww -c $config update control-panel=false
+		eww -c $config close control-panel
+		rm $cache
+	fi
+fi

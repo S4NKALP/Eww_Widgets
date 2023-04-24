@@ -1,0 +1,37 @@
+#!/bin/bash
+
+nicknames=(一 二 三 四 五 六 七 八 九 十)
+start=0
+
+workspaces () {
+	wmctrl -d | awk '{ print $1 " " $2 " " $9 }' | grep -v NSP | while read -r id active name; do
+    	
+		name="${name#*_}"
+    	
+		if [ "$active" == '*' ]; then
+      		button_status="active"
+    	else
+      		button_status="inactive"
+    	fi
+
+    	if wmctrl -l | grep --regexp '.*\s\+'"$id"'\s\+.*' >/dev/null; then
+      		button_fill="occupied"
+      		button_name="${nicknames[$start]}"
+    	else
+      		button_fill="empty"
+      		button_name="${nicknames[$start]}"
+    	fi
+
+    	load+="(button :class '$button_status-$button_fill'  :onclick 'wmctrl -s $id' '$button_name')"
+    
+      	echo -n $load
+      	load=""
+		((start=start+1))
+  	done
+}
+
+xprop -spy -root _NET_CURRENT_DESKTOP | while read -r; do
+  	echo '(box :orientation "h" :class "workspaces" :space-evenly true :halign "start" :vexpand true '"$(workspaces)"')'
+done
+
+# スパゲッティはもうありませんが、出力は長くなります :(
